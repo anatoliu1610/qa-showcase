@@ -23,8 +23,8 @@ export default function HomePage() {
               <a href="mailto:pyavchik@gmail.com" className="inline-flex items-center gap-1"><Mail size={16}/>pyavchik@gmail.com</a>
             </div>
             <div className="mt-4 flex flex-wrap gap-3">
-              <a aria-label="GitHub" href="<PUT_GITHUB_URL_HERE>" className="rounded-lg border p-2 hover:bg-slate-100"><Github size={18}/></a>
-              <a aria-label="LinkedIn" href="<PUT_LINKEDIN_URL_HERE>" className="rounded-lg border p-2 hover:bg-slate-100"><Linkedin size={18}/></a>
+              <a aria-label="GitHub" href="https://github.com/pyavchik" target="_blank" rel="noreferrer" className="rounded-lg border p-2 hover:bg-slate-100"><Github size={18}/></a>
+              <a aria-label="LinkedIn" href="https://www.linkedin.com/in/pyavchik/" target="_blank" rel="noreferrer" className="rounded-lg border p-2 hover:bg-slate-100"><Linkedin size={18}/></a>
               <Link href="/skills" className="rounded-lg bg-slate-900 px-4 py-2 text-white hover:bg-slate-700">Open Skills Web App</Link>
               <Link href="/coverage" className="rounded-lg border px-4 py-2 hover:bg-slate-100">Coverage Map</Link>
             </div>
