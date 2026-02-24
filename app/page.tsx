@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Github, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 import { Badge, Card, Section } from '@/components/ui';
 import { Reveal } from '@/components/reveal';
@@ -11,19 +12,33 @@ export default function HomePage() {
   return (
     <main className="mx-auto max-w-6xl space-y-6 p-4 md:p-8">
       <Reveal><section className="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
-        <p className="font-[var(--font-space)] text-sm font-semibold text-slate-600">QA Engineer Portfolio</p>
-        <h1 className="mt-2 text-4xl font-bold text-balance">Oleksandr Pyavchyk</h1>
-        <p className="mt-2 text-xl text-slate-700">QA Engineer | Quality Assurance Specialist</p>
-        <div className="mt-4 flex flex-wrap gap-3 text-sm text-slate-700">
-          <span className="inline-flex items-center gap-1"><MapPin size={16}/>Ukraine (Remote)</span>
-          <a href="tel:+380639977874" className="inline-flex items-center gap-1"><Phone size={16}/>+380 63 997 78 74</a>
-          <a href="mailto:pyavchik@gmail.com" className="inline-flex items-center gap-1"><Mail size={16}/>pyavchik@gmail.com</a>
-        </div>
-        <div className="mt-4 flex gap-3">
-          <a aria-label="GitHub" href="<PUT_GITHUB_URL_HERE>" className="rounded-lg border p-2 hover:bg-slate-100"><Github size={18}/></a>
-          <a aria-label="LinkedIn" href="<PUT_LINKEDIN_URL_HERE>" className="rounded-lg border p-2 hover:bg-slate-100"><Linkedin size={18}/></a>
-          <Link href="/skills" className="rounded-lg bg-slate-900 px-4 py-2 text-white hover:bg-slate-700">Open Skills Web App</Link>
-          <Link href="/coverage" className="rounded-lg border px-4 py-2 hover:bg-slate-100">Coverage Map</Link>
+        <div className="grid items-center gap-6 md:grid-cols-[1fr_220px]">
+          <div>
+            <p className="font-[var(--font-space)] text-sm font-semibold text-slate-600">QA Engineer Portfolio</p>
+            <h1 className="mt-2 text-4xl font-bold text-balance">Oleksandr Pyavchyk</h1>
+            <p className="mt-2 text-xl text-slate-700">QA Engineer | Quality Assurance Specialist</p>
+            <div className="mt-4 flex flex-wrap gap-3 text-sm text-slate-700">
+              <span className="inline-flex items-center gap-1"><MapPin size={16}/>Ukraine (Remote)</span>
+              <a href="tel:+380639977874" className="inline-flex items-center gap-1"><Phone size={16}/>+380 63 997 78 74</a>
+              <a href="mailto:pyavchik@gmail.com" className="inline-flex items-center gap-1"><Mail size={16}/>pyavchik@gmail.com</a>
+            </div>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <a aria-label="GitHub" href="<PUT_GITHUB_URL_HERE>" className="rounded-lg border p-2 hover:bg-slate-100"><Github size={18}/></a>
+              <a aria-label="LinkedIn" href="<PUT_LINKEDIN_URL_HERE>" className="rounded-lg border p-2 hover:bg-slate-100"><Linkedin size={18}/></a>
+              <Link href="/skills" className="rounded-lg bg-slate-900 px-4 py-2 text-white hover:bg-slate-700">Open Skills Web App</Link>
+              <Link href="/coverage" className="rounded-lg border px-4 py-2 hover:bg-slate-100">Coverage Map</Link>
+            </div>
+          </div>
+          <div className="mx-auto">
+            <Image
+              src="/profile.png"
+              alt="Oleksandr Pyavchyk profile photo"
+              width={220}
+              height={220}
+              className="rounded-2xl object-cover shadow-md ring-1 ring-slate-200"
+              priority
+            />
+          </div>
         </div>
       </section></Reveal>
 
