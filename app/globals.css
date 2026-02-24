@@ -2,8 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: light; }
-body { @apply bg-slate-50 text-slate-900; }
+:root { color-scheme: dark; }
+body {
+  @apply text-slate-100;
+  background:
+    radial-gradient(1200px 500px at 10% 0%, rgba(25, 70, 255, 0.25), transparent 60%),
+    radial-gradient(1000px 500px at 100% 100%, rgba(0, 255, 220, 0.18), transparent 60%),
+    linear-gradient(180deg, #040611 0%, #060a1a 55%, #050913 100%);
+  min-height: 100vh;
+}
 
-.prose-md h1,.prose-md h2,.prose-md h3 { @apply text-balance; }
-.prose-md p,.prose-md li { @apply text-pretty; }
+::selection { background: rgba(56, 189, 248, 0.35); }
+
+.prose-md h1,.prose-md h2,.prose-md h3 { @apply text-balance text-slate-100; }
+.prose-md p,.prose-md li { @apply text-pretty text-slate-300; }
