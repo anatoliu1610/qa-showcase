@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light; }
+body { @apply bg-slate-50 text-slate-900; }
+
+.prose-md h1,.prose-md h2,.prose-md h3 { @apply text-balance; }
+.prose-md p,.prose-md li { @apply text-pretty; }

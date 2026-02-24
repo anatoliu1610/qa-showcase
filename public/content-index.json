@@ -1,0 +1,128 @@
+[
+  {
+    "title": "architecture",
+    "path": "docs/architecture/architecture.md",
+    "category": "architecture",
+    "type": "md"
+  },
+  {
+    "title": "html5 test notes",
+    "path": "docs/web-protocols/html5-test-notes.md",
+    "category": "web-protocols",
+    "type": "md"
+  },
+  {
+    "title": "http checklist",
+    "path": "docs/web-protocols/http-checklist.md",
+    "category": "web-protocols",
+    "type": "md"
+  },
+  {
+    "title": "postman test strategy",
+    "path": "docs/api/postman-test-strategy.md",
+    "category": "api",
+    "type": "md"
+  },
+  {
+    "title": "swagger review",
+    "path": "docs/api/swagger-review.md",
+    "category": "api",
+    "type": "md"
+  },
+  {
+    "title": "postman collection",
+    "path": "api-tests/postman_collection.json",
+    "category": "api",
+    "type": "json"
+  },
+  {
+    "title": "postman environment",
+    "path": "api-tests/postman_environment.json",
+    "category": "api",
+    "type": "json"
+  },
+  {
+    "title": "sql explained",
+    "path": "docs/db/sql-explained.md",
+    "category": "db",
+    "type": "md"
+  },
+  {
+    "title": "queries",
+    "path": "sql/queries.sql",
+    "category": "db",
+    "type": "sql"
+  },
+  {
+    "title": "schema",
+    "path": "sql/schema.sql",
+    "category": "db",
+    "type": "sql"
+  },
+  {
+    "title": "seed",
+    "path": "sql/seed.sql",
+    "category": "db",
+    "type": "sql"
+  },
+  {
+    "title": "incident case study",
+    "path": "docs/logs/incident-case-study.md",
+    "category": "logs",
+    "type": "md"
+  },
+  {
+    "title": "kibana queries",
+    "path": "docs/logs/kibana-queries.md",
+    "category": "logs",
+    "type": "md"
+  },
+  {
+    "title": "bug report template",
+    "path": "docs/process/bug-report-template.md",
+    "category": "process",
+    "type": "md"
+  },
+  {
+    "title": "checklist regression",
+    "path": "docs/process/checklist-regression.md",
+    "category": "process",
+    "type": "md"
+  },
+  {
+    "title": "test cases",
+    "path": "docs/process/test-cases.md",
+    "category": "process",
+    "type": "md"
+  },
+  {
+    "title": "test plan",
+    "path": "docs/process/test-plan.md",
+    "category": "process",
+    "type": "md"
+  },
+  {
+    "title": "BUG 001 spin button disabled",
+    "path": "bugs/BUG-001-spin-button-disabled.md",
+    "category": "bugs",
+    "type": "md"
+  },
+  {
+    "title": "BUG 002 balance rounding",
+    "path": "bugs/BUG-002-balance-rounding.md",
+    "category": "bugs",
+    "type": "md"
+  },
+  {
+    "title": "jira sample issues",
+    "path": "tracker/jira-sample-issues.md",
+    "category": "tracker",
+    "type": "md"
+  },
+  {
+    "title": "youtrack sample issues",
+    "path": "tracker/youtrack-sample-issues.md",
+    "category": "tracker",
+    "type": "md"
+  }
+]

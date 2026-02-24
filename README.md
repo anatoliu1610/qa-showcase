@@ -1,18 +1,32 @@
-# qa-showcase
+# qa-showcase — QA Engineer Portfolio + Skills Web App
 
-QA portfolio project for iGaming interview prep (Platipus Gaming style requirements).
+Modern portfolio website for **Oleksandr Pyavchyk** with:
+- CV-like homepage (`/`)
+- Interactive Skills Web App (`/skills/*`)
+- Coverage map (`/coverage`)
+- Evidence loading from repo artifacts (`docs`, `sql`, `bugs`, `tracker`, `api-tests`)
 
-## Goal
-Demonstrate practical QA skills across:
-- Client-server architecture understanding
-- Web protocols + HTML5 testing
-- API testing (Postman, Swagger)
-- SQL and DB validation
-- Log analysis (Kibana/KQL)
-- Test documentation
-- Bug tracking workflows (Jira/YouTrack)
+## Stack
+- Next.js (App Router) + TypeScript
+- Tailwind CSS
+- motion/react (Framer Motion runtime)
+- lucide-react icons
+- react-markdown
 
-## Coverage Map
+## Routes
+- `/` Home CV
+- `/skills`
+- `/skills/architecture`
+- `/skills/web-protocols`
+- `/skills/api`
+- `/skills/db`
+- `/skills/logs`
+- `/skills/process`
+- `/skills/bugs`
+- `/skills/tracker`
+- `/coverage`
+
+## Project Evidence Structure
 - Architecture: `docs/architecture/`
 - Web/HTML5: `docs/web-protocols/`
 - API: `docs/api/`, `api-tests/`
@@ -21,10 +35,31 @@ Demonstrate practical QA skills across:
 - QA docs: `docs/process/`, `bugs/`
 - Trackers: `tracker/`
 
-## Quick Start
-1. Import Postman collection from `api-tests/postman_collection.json`
-2. Review schema and run SQL from `sql/schema.sql` and `sql/queries.sql`
-3. Read test docs under `docs/process/`
+## Install & Run
+```bash
+npm install
+npm run dev
+```
+Open http://localhost:3000
 
-## Tools
-Postman, Swagger/OpenAPI, SQL (PostgreSQL style), Kibana (KQL), Jira/YouTrack.
+## Build
+```bash
+npm run build
+npm run start
+```
+
+## Content Index
+Generated into `public/content-index.json` by:
+```bash
+npm run gen:index
+```
+
+## Deploy to Vercel
+1. Push repo to GitHub
+2. Import project in Vercel
+3. Build command: `npm run build`
+4. Output: Next.js default
+
+## Links to update
+- GitHub: replace `<PUT_GITHUB_URL_HERE>` in `app/page.tsx`
+- LinkedIn: replace `<PUT_LINKEDIN_URL_HERE>` in `app/page.tsx`
