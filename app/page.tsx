@@ -32,8 +32,8 @@ export default function HomePage() {
               <div className="mt-4 flex flex-wrap gap-3">
                 <a aria-label="GitHub" href="https://github.com/pyavchik" target="_blank" rel="noreferrer" className="rounded-xl border border-white/15 bg-white/5 p-2 hover:bg-white/10"><Github size={18} /></a>
                 <a aria-label="LinkedIn" href="https://www.linkedin.com/in/pyavchik/" target="_blank" rel="noreferrer" className="rounded-xl border border-white/15 bg-white/5 p-2 hover:bg-white/10"><Linkedin size={18} /></a>
-                <Link href="/skills" className="rounded-xl border border-cyan-400/30 bg-cyan-400/15 px-4 py-2 text-cyan-100 hover:bg-cyan-400/25">Open Skills Web App</Link>
-                <Link href="/coverage" className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-slate-200 hover:bg-white/10">Coverage Map</Link>
+                <Link href="/test-app" className="rounded-xl border border-cyan-400/30 bg-cyan-400/15 px-4 py-2 text-cyan-100 hover:bg-cyan-400/25">App for Test</Link>
+                <Link href="/tests" className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-slate-200 hover:bg-white/10">Tests</Link>
               </div>
             </div>
             <div className="mx-auto">
