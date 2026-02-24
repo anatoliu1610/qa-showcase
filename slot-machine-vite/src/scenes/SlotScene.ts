@@ -5,6 +5,7 @@ import { ReelView } from '@/rendering/ReelView';
 import { SlotStateMachine } from '@/domain/SlotStateMachine';
 import { SpinController } from '@/domain/SpinController';
 import { CryptoRng } from '@/math/CryptoRng';
+import { SeededRng } from '@/math/SeededRng';
 import { ResultGenerator } from '@/math/ResultGenerator';
 import { WinCalculator } from '@/math/WinCalculator';
 import { ScatterEffects } from '@/rendering/ScatterEffects';
@@ -21,6 +22,7 @@ export class SlotScene implements Scene {
   private creditLabel = new Text({ text: 'Win: 0', style: { fill: 0x7dd3fc, fontSize: 20 } });
 
   private readonly stateMachine = new SlotStateMachine();
+  private readonly resultGenerator: ResultGenerator;
   private readonly spinController: SpinController;
 
   private readonly scatterEffects = new ScatterEffects();
@@ -32,8 +34,14 @@ export class SlotScene implements Scene {
   private readonly debugState = new Text({ text: 'state: Idle', style: { fill: 0xe2e8f0, fontSize: 12 } });
   private readonly debugSeed = new Text({ text: 'rng: CryptoRng', style: { fill: 0xe2e8f0, fontSize: 12 } });
   private readonly debugTimeline = new Text({ text: 'timeline: -', style: { fill: 0x93c5fd, fontSize: 11 } });
+  private readonly debugStops = new Text({ text: 'last stops: -', style: { fill: 0xa5b4fc, fontSize: 11 } });
+  private readonly rngToggleText = new Text({ text: '[R] RNG: Crypto', style: { fill: 0xfef9c3, fontSize: 12 } });
+  private readonly replayText = new Text({ text: '[P] Replay Last', style: { fill: 0xbbf7d0, fontSize: 12 } });
   private stateTimeline: string[] = [];
   private lastState = 'Idle';
+  private rngMode: 'crypto' | 'seeded' = 'crypto';
+  private seedValue = 1337;
+  private lastStops: [number, number, number, number, number] | null = null;
 
   private presentationActive = false;
   private presentationElapsed = 0;
@@ -42,16 +50,16 @@ export class SlotScene implements Scene {
   private targetWin = 0;
 
   constructor(private app: Application) {
-    const generator = new ResultGenerator(gameConfig, new CryptoRng());
+    this.resultGenerator = new ResultGenerator(gameConfig, new CryptoRng());
     const winCalculator = new WinCalculator(gameConfig);
 
     this.spinController = new SpinController(
       this.stateMachine,
       gameConfig,
       this.reels,
-      generator,
+      this.resultGenerator,
       winCalculator,
-      (result, grid) => this.onEvaluation(result, grid),
+      (result, grid, stops) => this.onEvaluation(result, grid, stops),
       (scatterCount) => this.onFeatureTrigger(scatterCount)
     );
   }
@@ -59,9 +67,11 @@ export class SlotScene implements Scene {
   mount(): void {
     this.createLayout();
     this.app.stage.addChild(this.root);
+    window.addEventListener('keydown', this.handleDebugKeys);
   }
 
   unmount(): void {
+    window.removeEventListener('keydown', this.handleDebugKeys);
     this.effectsLayer.clearAll();
     this.winTween.clear();
     this.root.destroy({ children: true });
@@ -109,8 +119,25 @@ export class SlotScene implements Scene {
     this.debugSeed.y = 58;
     this.debugTimeline.x = 560;
     this.debugTimeline.y = 76;
+    this.debugStops.x = 560;
+    this.debugStops.y = 92;
+    this.rngToggleText.x = 560;
+    this.rngToggleText.y = 112;
+    this.replayText.x = 560;
+    this.replayText.y = 128;
 
-    this.root.addChild(title, this.statusLabel, this.creditLabel, this.debugTitle, this.debugState, this.debugSeed, this.debugTimeline);
+    this.root.addChild(
+      title,
+      this.statusLabel,
+      this.creditLabel,
+      this.debugTitle,
+      this.debugState,
+      this.debugSeed,
+      this.debugTimeline,
+      this.debugStops,
+      this.rngToggleText,
+      this.replayText
+    );
 
     const board = new Graphics();
     board.roundRect(24, 140, 740, 320, 22);
@@ -161,7 +188,13 @@ export class SlotScene implements Scene {
     this.root.addChild(this.spinButton);
   }
 
-  private onEvaluation(result: WinEvaluation, grid: Grid5x3): void {
+  private onEvaluation(
+    result: WinEvaluation,
+    grid: Grid5x3,
+    stops: [number, number, number, number, number]
+  ): void {
+    this.lastStops = stops;
+    this.debugStops.text = `last stops: ${stops.join(', ')}`;
     this.currentEval = result;
     this.presentationActive = true;
     this.presentationElapsed = 0;
@@ -287,6 +320,26 @@ export class SlotScene implements Scene {
     this.emitAudio('feature:trigger', { scatterCount, feature: 'scatter-bonus' });
     this.emitAudio('audio:feature_trigger', { scatterCount });
   }
+
+  private handleDebugKeys = (event: KeyboardEvent): void => {
+    if (event.key.toLowerCase() === 'r') {
+      this.rngMode = this.rngMode === 'crypto' ? 'seeded' : 'crypto';
+      if (this.rngMode === 'crypto') {
+        this.resultGenerator.setRng(new CryptoRng());
+        this.debugSeed.text = 'rng: CryptoRng';
+        this.rngToggleText.text = '[R] RNG: Crypto';
+      } else {
+        this.resultGenerator.setRng(new SeededRng(this.seedValue));
+        this.debugSeed.text = `rng: SeededRng(${this.seedValue})`;
+        this.rngToggleText.text = '[R] RNG: Seeded';
+      }
+    }
+
+    if (event.key.toLowerCase() === 'p' && this.lastStops) {
+      this.resultGenerator.queueForcedStops(this.lastStops);
+      this.replayText.text = `[P] Replay queued: ${this.lastStops.join('-')}`;
+    }
+  };
 
   private emitAudio(eventName: string, detail: Record<string, unknown>): void {
     window.dispatchEvent(new CustomEvent(eventName, { detail }));

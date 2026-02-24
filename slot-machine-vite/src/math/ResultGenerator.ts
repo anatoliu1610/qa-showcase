@@ -7,13 +7,43 @@ export interface SpinResultMatrix {
 }
 
 export class ResultGenerator {
+  private forcedStops: [number, number, number, number, number] | null = null;
+  private lastStops: [number, number, number, number, number] | null = null;
+
   constructor(
     private config: GameConfig,
     private rng: RngProvider
   ) {}
 
+  setRng(rng: RngProvider): void {
+    this.rng = rng;
+  }
+
+  queueForcedStops(stops: [number, number, number, number, number]): void {
+    this.forcedStops = stops;
+  }
+
+  getLastStops(): [number, number, number, number, number] | null {
+    return this.lastStops;
+  }
+
   generateStopIndices(): [number, number, number, number, number] {
-    return this.config.reels.map((strip) => this.rng.nextInt(strip.length)) as [number, number, number, number, number];
+    if (this.forcedStops) {
+      const out = this.forcedStops;
+      this.forcedStops = null;
+      this.lastStops = out;
+      return out;
+    }
+
+    const generated = this.config.reels.map((strip) => this.rng.nextInt(strip.length)) as [
+      number,
+      number,
+      number,
+      number,
+      number
+    ];
+    this.lastStops = generated;
+    return generated;
   }
 
   matrixFromStops(stops: [number, number, number, number, number]): Grid5x3 {

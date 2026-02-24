@@ -15,6 +15,7 @@ export class SpinController {
   private bonusElapsedMs = 0;
   private presentationMs = 0;
   private spinGrid: Grid5x3 | null = null;
+  private spinStops: [number, number, number, number, number] | null = null;
   private stopRequested: boolean[] = [false, false, false, false, false];
 
   constructor(
@@ -23,7 +24,11 @@ export class SpinController {
     private reels: ReelPort[],
     private readonly resultGenerator: ResultGenerator,
     private readonly winCalculator: WinCalculator,
-    private readonly onEvaluation: (result: WinEvaluation, grid: Grid5x3) => void,
+    private readonly onEvaluation: (
+      result: WinEvaluation,
+      grid: Grid5x3,
+      stops: [number, number, number, number, number]
+    ) => void,
     private readonly onFeatureTrigger: (scatterCount: number) => void
   ) {}
 
@@ -41,6 +46,7 @@ export class SpinController {
 
     const generated = this.resultGenerator.generate();
     this.spinGrid = generated.matrix;
+    this.spinStops = generated.stops;
 
     this.reels.forEach((r) => r.startSpin());
     this.stateMachine.transition('Spinning');
@@ -85,9 +91,9 @@ export class SpinController {
     }
 
     if (this.stateMachine.current === 'Evaluating') {
-      if (!this.spinGrid) return;
+      if (!this.spinGrid || !this.spinStops) return;
       const result = this.winCalculator.evaluate(this.spinGrid);
-      this.onEvaluation(result, this.spinGrid);
+      this.onEvaluation(result, this.spinGrid, this.spinStops);
 
       if (result.scatterCount >= 3) {
         this.onFeatureTrigger(result.scatterCount);
