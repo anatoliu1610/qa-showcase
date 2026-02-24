@@ -22,7 +22,7 @@ export class SpinController {
     private reels: ReelPort[],
     private readonly resultGenerator: ResultGenerator,
     private readonly winCalculator: WinCalculator,
-    private readonly onEvaluation: (result: WinEvaluation) => void
+    private readonly onEvaluation: (result: WinEvaluation, grid: Grid5x3) => void
   ) {}
 
   setReels(reels: ReelPort[]): void {
@@ -84,7 +84,7 @@ export class SpinController {
     if (this.stateMachine.current === 'Evaluating') {
       if (!this.spinGrid) return;
       const result = this.winCalculator.evaluate(this.spinGrid);
-      this.onEvaluation(result);
+      this.onEvaluation(result, this.spinGrid);
       this.stateMachine.transition('PresentingWin');
       return;
     }
