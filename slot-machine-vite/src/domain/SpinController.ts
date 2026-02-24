@@ -12,9 +12,10 @@ export interface ReelPort {
 
 export class SpinController {
   private spinElapsedMs = 0;
+  private bonusElapsedMs = 0;
+  private presentationMs = 0;
   private spinGrid: Grid5x3 | null = null;
   private stopRequested: boolean[] = [false, false, false, false, false];
-  private presentationMs = 0;
 
   constructor(
     private readonly stateMachine: SlotStateMachine,
@@ -22,7 +23,8 @@ export class SpinController {
     private reels: ReelPort[],
     private readonly resultGenerator: ResultGenerator,
     private readonly winCalculator: WinCalculator,
-    private readonly onEvaluation: (result: WinEvaluation, grid: Grid5x3) => void
+    private readonly onEvaluation: (result: WinEvaluation, grid: Grid5x3) => void,
+    private readonly onFeatureTrigger: (scatterCount: number) => void
   ) {}
 
   setReels(reels: ReelPort[]): void {
@@ -33,6 +35,7 @@ export class SpinController {
     if (!this.stateMachine.canSpin()) return;
 
     this.spinElapsedMs = 0;
+    this.bonusElapsedMs = 0;
     this.presentationMs = 0;
     this.stopRequested = [false, false, false, false, false];
 
@@ -85,13 +88,29 @@ export class SpinController {
       if (!this.spinGrid) return;
       const result = this.winCalculator.evaluate(this.spinGrid);
       this.onEvaluation(result, this.spinGrid);
-      this.stateMachine.transition('PresentingWin');
+
+      if (result.scatterCount >= 3) {
+        this.onFeatureTrigger(result.scatterCount);
+        this.bonusElapsedMs = 0;
+        this.stateMachine.transition('BonusTrigger');
+      } else {
+        this.stateMachine.transition('PresentingWin');
+      }
+      return;
+    }
+
+    if (this.stateMachine.current === 'BonusTrigger') {
+      this.bonusElapsedMs += deltaMs;
+      if (this.bonusElapsedMs >= this.config.timing.featureTriggerMs) {
+        this.presentationMs = 0;
+        this.stateMachine.transition('PresentingWin');
+      }
       return;
     }
 
     if (this.stateMachine.current === 'PresentingWin') {
       this.presentationMs += deltaMs;
-      if (this.presentationMs >= 700) {
+      if (this.presentationMs >= this.config.timing.presentationMs) {
         this.stateMachine.transition('Idle');
       }
     }

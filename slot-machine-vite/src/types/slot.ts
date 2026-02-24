@@ -17,6 +17,9 @@ export interface TimingConfig {
   steadyMs: number;
   decelMs: number;
   stopDelayMs: number;
+  featureTriggerMs: number;
+  presentationMs: number;
+  lineStepMs: number;
 }
 
 export interface GameConfig {

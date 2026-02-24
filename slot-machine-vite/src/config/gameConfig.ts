@@ -56,6 +56,9 @@ export const gameConfig: GameConfig = {
     accelMs: 220,
     steadyMs: 700,
     decelMs: 480,
-    stopDelayMs: 120
+    stopDelayMs: 120,
+    featureTriggerMs: 900,
+    presentationMs: 900,
+    lineStepMs: 450
   }
 };

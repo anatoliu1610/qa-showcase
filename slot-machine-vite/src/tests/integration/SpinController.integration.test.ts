@@ -41,6 +41,9 @@ describe('SpinController integration', () => {
       winCalculator,
       () => {
         evaluated += 1;
+      },
+      () => {
+        // feature trigger hook for 3+ scatters
       }
     );
 

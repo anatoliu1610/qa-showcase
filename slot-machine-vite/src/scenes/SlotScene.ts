@@ -28,6 +28,13 @@ export class SlotScene implements Scene {
   private readonly effectsLayer = new EffectsLayer(this.winLineView, this.scatterEffects);
   private readonly winTween = new TweenManager();
 
+  private readonly debugTitle = new Text({ text: 'DEBUG', style: { fill: 0x94a3b8, fontSize: 12 } });
+  private readonly debugState = new Text({ text: 'state: Idle', style: { fill: 0xe2e8f0, fontSize: 12 } });
+  private readonly debugSeed = new Text({ text: 'rng: CryptoRng', style: { fill: 0xe2e8f0, fontSize: 12 } });
+  private readonly debugTimeline = new Text({ text: 'timeline: -', style: { fill: 0x93c5fd, fontSize: 11 } });
+  private stateTimeline: string[] = [];
+  private lastState = 'Idle';
+
   private presentationActive = false;
   private presentationElapsed = 0;
   private currentEval: WinEvaluation | null = null;
@@ -44,7 +51,8 @@ export class SlotScene implements Scene {
       this.reels,
       generator,
       winCalculator,
-      (result, grid) => this.onEvaluation(result, grid)
+      (result, grid) => this.onEvaluation(result, grid),
+      (scatterCount) => this.onFeatureTrigger(scatterCount)
     );
   }
 
@@ -67,6 +75,14 @@ export class SlotScene implements Scene {
 
     this.statusLabel.text = `State: ${this.stateMachine.current}`;
     this.creditLabel.text = `Win: ${Math.round(this.displayedWin)}`;
+    this.debugState.text = `state: ${this.stateMachine.current}`;
+
+    if (this.lastState !== this.stateMachine.current) {
+      this.lastState = this.stateMachine.current;
+      this.stateTimeline.unshift(this.stateMachine.current);
+      this.stateTimeline = this.stateTimeline.slice(0, 7);
+      this.debugTimeline.text = `timeline: ${this.stateTimeline.join(' → ')}`;
+    }
 
     if (this.presentationActive) {
       this.presentationElapsed += deltaMs;
@@ -85,7 +101,16 @@ export class SlotScene implements Scene {
     this.creditLabel.x = 24;
     this.creditLabel.y = 88;
 
-    this.root.addChild(title, this.statusLabel, this.creditLabel);
+    this.debugTitle.x = 560;
+    this.debugTitle.y = 24;
+    this.debugState.x = 560;
+    this.debugState.y = 42;
+    this.debugSeed.x = 560;
+    this.debugSeed.y = 58;
+    this.debugTimeline.x = 560;
+    this.debugTimeline.y = 76;
+
+    this.root.addChild(title, this.statusLabel, this.creditLabel, this.debugTitle, this.debugState, this.debugSeed, this.debugTimeline);
 
     const board = new Graphics();
     board.roundRect(24, 140, 740, 320, 22);
@@ -256,6 +281,11 @@ export class SlotScene implements Scene {
       g.stroke({ color: 0x22d3ee, width: 2, alpha: 0.7 });
       this.effectsLayer.symbolHighlightLayer.addChild(g);
     });
+  }
+
+  private onFeatureTrigger(scatterCount: number): void {
+    this.emitAudio('feature:trigger', { scatterCount, feature: 'scatter-bonus' });
+    this.emitAudio('audio:feature_trigger', { scatterCount });
   }
 
   private emitAudio(eventName: string, detail: Record<string, unknown>): void {
