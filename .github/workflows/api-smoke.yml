@@ -1,0 +1,20 @@
+name: API Smoke
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint SQL files presence
+        run: |
+          test -f sql/schema.sql
+          test -f sql/queries.sql
+      - name: Validate docs presence
+        run: |
+          test -f docs/process/test-cases.md
+          test -f docs/logs/kibana-queries.md
