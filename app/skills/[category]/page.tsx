@@ -26,11 +26,23 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
 
   return (
     <section className="space-y-4">
-      <h1 className="text-3xl font-bold">{found.label}</h1>
-      <p className="text-slate-700">{found.desc}</p>
-      <Card><h2 className="mb-2 font-semibold">Mini Demo</h2><Widget /></Card>
-      <Card><h2 className="mb-2 font-semibold">Evidence</h2>
-        <ul className="space-y-2 text-sm">{artifacts.map((a)=><li key={a.path}><p className="font-medium">{a.title}</p><p className="text-slate-600">{a.path}</p><MarkdownView content={readText(a.path).slice(0,500)} /></li>)}</ul>
+      <h1 className="text-3xl font-bold text-white">{found.label}</h1>
+      <p className="text-slate-300">{found.desc}</p>
+      <Card>
+        <h2 className="mb-2 font-semibold text-white">Mini Demo</h2>
+        <Widget />
+      </Card>
+      <Card>
+        <h2 className="mb-2 font-semibold text-white">Evidence</h2>
+        <ul className="space-y-3 text-sm">
+          {artifacts.map((a) => (
+            <li key={a.path} className="rounded-xl border border-white/10 bg-[#0f1735] p-3">
+              <p className="font-medium text-slate-100">{a.title}</p>
+              <p className="text-slate-400">{a.path}</p>
+              <MarkdownView content={readText(a.path).slice(0, 500)} />
+            </li>
+          ))}
+        </ul>
       </Card>
     </section>
   );
