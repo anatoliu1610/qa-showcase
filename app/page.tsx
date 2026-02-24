@@ -26,14 +26,14 @@ export default function HomePage() {
               <p className="mt-2 text-xl text-slate-300">QA Engineer | Quality Assurance Specialist</p>
               <div className="mt-4 flex flex-wrap gap-3 text-sm text-slate-300">
                 <span className="inline-flex items-center gap-1"><MapPin size={16} />Ukraine (Remote)</span>
-                <a href="tel:+380639977874" className="inline-flex items-center gap-1 hover:text-cyan-200"><Phone size={16} />+380 63 997 78 74</a>
-                <a href="mailto:pyavchik@gmail.com" className="inline-flex items-center gap-1 hover:text-cyan-200"><Mail size={16} />pyavchik@gmail.com</a>
+                <a href="tel:+380639977874" className="inline-flex items-center gap-1"><Phone size={16} />+380 63 997 78 74</a>
+                <a href="mailto:pyavchik@gmail.com" className="inline-flex items-center gap-1"><Mail size={16} />pyavchik@gmail.com</a>
               </div>
               <div className="mt-4 flex flex-wrap gap-3">
-                <a aria-label="GitHub" href="https://github.com/pyavchik" target="_blank" rel="noreferrer" className="rounded-xl border border-white/15 bg-white/5 p-2 hover:bg-white/10"><Github size={18} /></a>
-                <a aria-label="LinkedIn" href="https://www.linkedin.com/in/pyavchik/" target="_blank" rel="noreferrer" className="rounded-xl border border-white/15 bg-white/5 p-2 hover:bg-white/10"><Linkedin size={18} /></a>
-                <Link href="/test-app" className="rounded-xl border border-cyan-400/30 bg-cyan-400/15 px-4 py-2 text-cyan-100 hover:bg-cyan-400/25">App for Test</Link>
-                <Link href="/tests" className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-slate-200 hover:bg-white/10">Tests</Link>
+                <a aria-label="GitHub" href="https://github.com/pyavchik" target="_blank" rel="noreferrer" className="rounded-xl border border-white/15 bg-white/5 p-2"><Github size={18} /></a>
+                <a aria-label="LinkedIn" href="https://www.linkedin.com/in/pyavchik/" target="_blank" rel="noreferrer" className="rounded-xl border border-white/15 bg-white/5 p-2"><Linkedin size={18} /></a>
+                <Link href="/test-app" className="rounded-xl border border-cyan-400/30 bg-cyan-400/15 px-4 py-2 text-cyan-100">App for Test</Link>
+                <Link href="/tests" className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-slate-200">Tests</Link>
               </div>
             </div>
             <div className="mx-auto">
@@ -81,7 +81,7 @@ export default function HomePage() {
 
       <Reveal>
         <Section title="Contacts">
-          <div className="flex items-center gap-2 text-slate-300"><Contact className="h-4 w-4 text-cyan-300" /><p>Email: <a href="mailto:pyavchik@gmail.com" className="underline hover:text-cyan-200">pyavchik@gmail.com</a> · Phone: <a href="tel:+380639977874" className="underline hover:text-cyan-200">+380 63 997 78 74</a></p></div>
+          <div className="flex items-center gap-2 text-slate-300"><Contact className="h-4 w-4 text-cyan-300" /><p>Email: <a href="mailto:pyavchik@gmail.com" className="underline">pyavchik@gmail.com</a> · Phone: <a href="tel:+380639977874" className="underline">+380 63 997 78 74</a></p></div>
         </Section>
       </Reveal>
     </main>
