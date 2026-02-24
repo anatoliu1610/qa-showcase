@@ -10,6 +10,7 @@ import { WinCalculator } from '@/math/WinCalculator';
 import { ScatterEffects } from '@/rendering/ScatterEffects';
 import { WinLineView } from '@/rendering/WinLineView';
 import { TweenManager } from '@/rendering/TweenManager';
+import { EffectsLayer } from '@/rendering/EffectsLayer';
 import type { Grid5x3, Row, WinEvaluation } from '@/types/slot';
 
 export class SlotScene implements Scene {
@@ -22,10 +23,10 @@ export class SlotScene implements Scene {
   private readonly stateMachine = new SlotStateMachine();
   private readonly spinController: SpinController;
 
-  private readonly effectsLayer = new ScatterEffects();
+  private readonly scatterEffects = new ScatterEffects();
   private readonly winLineView = new WinLineView();
+  private readonly effectsLayer = new EffectsLayer(this.winLineView, this.scatterEffects);
   private readonly winTween = new TweenManager();
-  private readonly symbolHighlightLayer = new Container();
 
   private presentationActive = false;
   private presentationElapsed = 0;
@@ -53,7 +54,7 @@ export class SlotScene implements Scene {
   }
 
   unmount(): void {
-    this.effectsLayer.clearEffects();
+    this.effectsLayer.clearAll();
     this.winTween.clear();
     this.root.destroy({ children: true });
     this.reels = [];
@@ -61,7 +62,7 @@ export class SlotScene implements Scene {
 
   update(deltaMs: number): void {
     this.spinController.update(deltaMs);
-    this.effectsLayer.update(deltaMs);
+    this.scatterEffects.update(deltaMs);
     this.winTween.update(deltaMs);
 
     this.statusLabel.text = `State: ${this.stateMachine.current}`;
@@ -102,13 +103,8 @@ export class SlotScene implements Scene {
 
     this.spinController.setReels(this.reels);
 
-    this.symbolHighlightLayer.zIndex = 10;
-    this.winLineView.zIndex = 20;
     this.effectsLayer.zIndex = 30;
     this.root.sortableChildren = true;
-
-    this.root.addChild(this.symbolHighlightLayer);
-    this.root.addChild(this.winLineView);
     this.root.addChild(this.effectsLayer);
 
     this.createSpinButton();
@@ -133,9 +129,7 @@ export class SlotScene implements Scene {
       this.currentEval = null;
       this.targetWin = 0;
       this.displayedWin = 0;
-      this.effectsLayer.clearEffects();
-      this.winLineView.clearAll();
-      this.clearHighlights();
+      this.effectsLayer.clearAll();
       this.spinController.startSpin();
     });
 
@@ -160,11 +154,11 @@ export class SlotScene implements Scene {
     });
 
     const scatterPositions = this.getScatterPositions(grid);
-    scatterPositions.forEach((pos) => this.effectsLayer.playLandImpact(pos));
-    this.effectsLayer.setIdle(scatterPositions);
+    scatterPositions.forEach((pos) => this.scatterEffects.playLandImpact(pos));
+    this.scatterEffects.setIdle(scatterPositions);
 
     if (scatterPositions.length > 0) {
-      this.effectsLayer.playHighlightAll(scatterPositions, () => {
+      this.scatterEffects.playHighlightAll(scatterPositions, () => {
         this.emitAudio('audio:scatter_highlight', { count: scatterPositions.length });
       });
       this.emitAudio('audio:scatter_land', { count: scatterPositions.length });
@@ -230,7 +224,7 @@ export class SlotScene implements Scene {
   }
 
   private clearHighlights(): void {
-    this.symbolHighlightLayer.removeChildren().forEach((c) => c.destroy());
+    this.effectsLayer.symbolHighlightLayer.removeChildren().forEach((c) => c.destroy());
   }
 
   private highlightLinePositions(positions: Array<{ reel: number; row: Row }>): void {
@@ -240,7 +234,7 @@ export class SlotScene implements Scene {
       const g = new Graphics();
       g.roundRect(center.x - 58, center.y - 38, 116, 76, 12);
       g.stroke({ color: 0xfacc15, width: 3, alpha: 0.9 });
-      this.symbolHighlightLayer.addChild(g);
+      this.effectsLayer.symbolHighlightLayer.addChild(g);
     });
   }
 
@@ -260,7 +254,7 @@ export class SlotScene implements Scene {
       const g = new Graphics();
       g.roundRect(center.x - 56, center.y - 36, 112, 72, 12);
       g.stroke({ color: 0x22d3ee, width: 2, alpha: 0.7 });
-      this.symbolHighlightLayer.addChild(g);
+      this.effectsLayer.symbolHighlightLayer.addChild(g);
     });
   }
 
